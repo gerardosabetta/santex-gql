@@ -12,7 +12,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 const commerceLink = createHttpLink({
-  uri: 'https://shrouded-wave-86340.herokuapp.com/shop-api',
+  uri: 'https://demo.vendure.io/shop-api',
   headers: {
     authorization: localStorage.getItem('Auth-Token')
       ? `Bearer ${localStorage.getItem('Auth-Token')}`
