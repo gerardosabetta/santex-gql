@@ -2,6 +2,7 @@
   "name": "frontend-test",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gerardosabetta.github.io/santex-gql/",
   "dependencies": {
     "@apollo/client": "^3.3.18",
     "@mui/material": "^5.0.4",
