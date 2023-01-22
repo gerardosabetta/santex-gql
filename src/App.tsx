@@ -12,15 +12,17 @@ import ResultsGrid from './components/ResultsGrid';
 import FacetList from './components/FacetList';
 import ProductList from './components/ProductList';
 import SortSelect from './components/SortSelect';
+import useDebounce from './hooks/useDebounce';
 
 function App() {
   const [term, setTerm] = useState('');
   const [skip, setSkip] = useState(0);
   const [facetValueIds, setFacetValueIds] = useState<string[]>([]);
   const [sort, setSort] = useState(SORTING_OPTIONS[2]);
+  const deferredTerm = useDebounce(term, 200); // useDeferredValue is not available in React 17
   const { data, loading } = useSearchProductsQuery({
     variables: {
-      term,
+      term: deferredTerm,
       take: PAGE_SIZE,
       skip,
       sort: sort.value,
