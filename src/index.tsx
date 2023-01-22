@@ -10,14 +10,22 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import GlobalStyle from './globalStyles';
 
 const commerceLink = createHttpLink({
   uri: 'https://demo.vendure.io/shop-api',
-  headers: {
-    authorization: localStorage.getItem('Auth-Token')
-      ? `Bearer ${localStorage.getItem('Auth-Token')}`
-      : '',
-  },
+});
+
+const addAuthHeader = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('Auth-Token');
+  if (token) {
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  return forward(operation);
 });
 
 const afterwareLink = new ApolloLink((operation, forward) => {
@@ -34,12 +42,13 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: ApolloLink.from([afterwareLink, commerceLink]),
+  link: ApolloLink.from([afterwareLink, addAuthHeader, commerceLink]),
 });
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
+      <GlobalStyle />
       <App />
     </ApolloProvider>
   </React.StrictMode>,
